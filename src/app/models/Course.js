@@ -22,4 +22,16 @@ CourseSchema.plugin(mongooseDelete, {
     overrideMethods: 'all',
 })
 
+//Custom query heplers
+CourseSchema.query.sortable = function(req){
+    if(Object.prototype.hasOwnProperty.call(req.query, '_sort')){
+            const isValidType = ['asc', 'desc'].includes(req.query.type)
+            return this.sort({
+                [req.query.column]: isValidType ? req.query.type : 'desc'
+            })
+        }
+
+    return this
+} 
+
 module.exports = mongoose.model('Course', CourseSchema);
